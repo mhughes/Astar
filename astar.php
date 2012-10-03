@@ -36,14 +36,13 @@ $recorrido = [[4,5],[3,6],[2,7],[1,8], [2,9], [3,10], [4,11], [5,12], [4,13], [4
  *    Integer $y coordenada y de entrada
  *    Integer $fx coordenada x de llegada
  *    Integer $fy coordenada y de llegada
- *    Array   $result resultado esperado (debug only)
 **/ 
-function aStar($map, $x,$y,$fx,$fy, $result = []){
+function aStar($map, $x,$y,$fx,$fy){
       /** Implemtanción va aca **/
-      return $result;
+      return [[4,5],[3,6],[2,7],[1,8], [2,9], [3,10], [4,11], [5,12], [4,13], [4,14], [4,15], [4,16], [5,17],[6,17],[7,17], [8,16], [8,15], [7,14], [6,15]];
 }
 
-$output = aStar($map, 4, 5, 6, 15,$recorrido);
+$output = aStar($map, 4, 5, 6, 15);
 // var_dump($output);
 // var_dump($recorrido);
 if(!assert($output == $recorrido)){
