@@ -43,10 +43,9 @@ function aStar($map, $x,$y,$fx,$fy){
 }
 
 $output = aStar($map, 4, 5, 6, 15);
-// var_dump($output);
-// var_dump($recorrido);
-if(!assert($output == $recorrido)){
-      echo "No devuelve el recorrido correcto";
+
+if($output != $recorrido){
+      echo "No deasvuelve el recorrido correcto";
 }else{
       echo "Correcto";
 }
