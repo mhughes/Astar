@@ -15,15 +15,15 @@ var mapa = [200,200,200,200,200,200,200,200,200,200,15 ,
       200,200,200,200,200,200,200,200,200,200,15   ,
       200,200,200,200,200,200,200,200,200,200,15   ,
       200,200,200,200,200,200,200,200,200,200,15   ,
-      200,200,042,042,042,042,042,042,042,042,15   ,
+      200,200,42,42,42,42,42,42,42,42,15   ,
       200,200,200,200,200,200,200,200,200,200,15   ,
       200,200,200,200,200,200,200,200,200,200,15   ,
       200,200,200,200,200,200,200,200,200,200,15   ,
       200,200,200,200,200,200,200,200,200,200,15   ,
-      200,200,200,200,200,042,042,042,042,042,15   ,
-      200,200,200,200,200,042,200,200,200,200,15   ,
-      200,200,200,200,200,042,200,042,200,200,15   ,
-      200,200,200,200,200,042,042,042,200,200,15   ,
+      200,200,200,200,200,42,42,42,42,42,15   ,
+      200,200,200,200,200,42,200,200,200,200,15   ,
+      200,200,200,200,200,42,200,42,200,200,15   ,
+      200,200,200,200,200,42,42,42,200,200,15   ,
       200,200,200,200,200,200,200,200,200,200,15   ,
       200,200,200,200,200,200,200,200,200,200,15   ,
       200,200,200,200,200,200,200,200,200,200,15];
@@ -71,8 +71,8 @@ function getPixel(mapa, cx,cy) {
 }
 
 function drawGrid(mapa) {
-    for(py=0; py<20; py++){
-        for(px=0;px<10; px++) {
+    for(var py=0; py<20; py++){
+        for(var px=0;px<10; px++) {
             if(mapa[(py*11)+px] !== 0) { putChar(px,py, getTipoBloque(mapa[(py*11)+px]), getNumBloque(mapa[(py*11)+px]));}
         }
     }
@@ -91,7 +91,7 @@ function pushNode(lista, nodo) {
 }
 
 function popNode(lista, indice) {
-    nodoTemp = lista.splice(indice,1);
+    var nodoTemp = lista.splice(indice,1);
     return nodoTemp[0];
 }
 
@@ -109,27 +109,18 @@ function estaEn(lista,x,y) {
     return encontrado;
 }
 
-
-
-
-
-      
-
-
 function obtenerG(indice) {
-  if( (indice == 0 ) || (indice == 1 ) || (indice == 2 ) ||(indice == 3 ) ) { return 10 } else { return 14 };
+    if( (indice === 0 ) || (indice === 1 ) || (indice === 2 ) ||(indice === 3 ) ) { return 10; } else { return 14; }
 }
-
 
 function obtenerF(nodo) {
-  return nodo.g + nodo.h;
+    return nodo.g + nodo.h;
 }
 
-
 function  popMinCostNode(lista) {
-    var F = 0;
-    var indiceMenorF = 0;
-    minCostoF = 100000;
+    var F = 0,
+        indiceMenorF = 0,
+        minCostoF = 100000;
     
     for(var i = 0; i<lista.length; i++) {
       F = obtenerF(lista[i]);
@@ -175,7 +166,7 @@ var aStar = function(map, x, y, fx, fy){
 
     while ((listaAbierta.length !== 0) && (!caminoEncontrado)) {
 
-        extractNode = popMinCostNode(listaAbierta);
+        var extractNode = popMinCostNode(listaAbierta);
 
         // inicio analisis de nodos
         if ((extractNode.x == fx) && (extractNode.y == fy)) {
@@ -185,7 +176,7 @@ var aStar = function(map, x, y, fx, fy){
 
         } else {
             //para cada nodo adjacente
-            for(i=0; i<8; i++) {
+            for(var i=0; i<8; i++) {
                 var ax = extractNode.x + adyacente[i].x;
                 var ay = extractNode.y + adyacente[i].y;
                 //verificar si es transitable
@@ -197,7 +188,8 @@ var aStar = function(map, x, y, fx, fy){
                         // no esta en ninguna lista asi que lo agrego en listaAbierta
                         var G = extractNode.g + obtenerG(i);
                         var H = obtenerH(ax,ay,fx,fy);
-                        nodoTemp = { x : ax, y : ay, px : extractNode.x, py : extractNode.y, g : G, h : H };
+                        //next node.
+                        var nodoTemp = { x : ax, y : ay, px : extractNode.x, py : extractNode.y, g : G, h : H };
                         //alert(listaAbierta.length);
                         pushNode(listaAbierta, nodoTemp);
                     }
@@ -205,14 +197,13 @@ var aStar = function(map, x, y, fx, fy){
             } // END FOR
 
         } // fin analisis de nodos
-
+        //nodo actual lo agrego a analizado.
         pushNode(listaCerrada, extractNode);
     } // fin while
 
     if(listaAbierta.length === 0) {
         return false; 
     } else {
-        
         var indiceFinal = listaCerrada.length - 1;
         camino.push({x : listaCerrada[indiceFinal].x, y : listaCerrada[indiceFinal].y});
         parentX = listaCerrada[indiceFinal].px;
@@ -220,7 +211,7 @@ var aStar = function(map, x, y, fx, fy){
         
         
         while ((parentX != -1) && (parentY != -1)) {
-            for(i = indiceFinal; i >= 0; i--) {
+            for(var i = indiceFinal; i >= 0; i--) {
                 // buscar en la lista donde esta Px y Py
                 //alert(indiceFinal);
 
