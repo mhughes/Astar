@@ -40,33 +40,17 @@ function checkKey() {
     updateCanvas();
 }
 
-
-function updateCanvas() {
-    ctx.clearRect(0,0,160,320);
-    //ctx.drawImage(blocks,x,y,32,32);
-
-    drawGrid();
-    putChar(4,5,1,15);//x,y de punto de partida y los pixeles de la imagen
-    putChar(6,15,3,15);//punto de llegada
-    //drawBlock(x,y,pieza);
-}
-    
-    
-function putChar(cx, cy, tipo_bloque, numero_bloque) {
-    ctx.drawImage(blocks,(numero_bloque-1)*8,(tipo_bloque-1)*8,8,8,cx*16,cy*16,16,16);
-}
-
-
 function putCharInMatriz(mapa, cx, cy, tipo_bloque, numero_bloque) {
     mapa[cy*11 + cx] = ((tipo_bloque-1) * 20) + numero_bloque;
-} 
-
-
-function putPixel(mapa, cx, cy, on) {
-    if(on) { mapa[cy*11 + cx] = 15; } else { mapa[cy*11 + cx] = 200; } 
 }
 
-function getPixel(mapa, cx,cy) {
+
+function putPixel(cx, cy, on) {
+    if(on) { mapa[cy*11 + cx] = 15; } else { mapa[cy*11 + cx] = 200; }
+}
+
+function getPixel(cx,cy) {
+    console.log("get pixel at x:"+cx+"y: "+cy+" pixel:"+mapa[cy*11 + cx]);
     if(mapa[cy*11 + cx] == 200) { return true; } else { return false; }
 }
 
@@ -95,7 +79,8 @@ function popNode(lista, indice) {
     return nodoTemp[0];
 }
 
-function esTransitable(x,y) {
+function esTransitable(x, y) {
+    console.log("es transitable x:"+x+" y:"+y+" es" + getPixel(x, y));
     return getPixel(x,y);
 }
 
@@ -132,78 +117,83 @@ function  popMinCostNode(lista) {
   
     return popNode(lista,indiceMenorF);
   
-} // end extractNodeMenorCosto
+} // end nodoAnalizadoMenorCosto
 
 
 function obtenerH(x,y,fx,fy) {
   return 10 * (Math.abs(x - fx) + Math.abs(y - fy));
 }
 
-var aStar = function(map, x, y, fx, fy){
+ function aStar(mapa, x,y,fx,fy) {
       
-    var nodoActual = { x : x, y : y, px : -1, py : -1, g : 0, h : 0 }; 
-    // nodo inicial no tiene parent ni F
-
-    var adyacente = [];
-
-    adyacente[0] = { x :  0, y : -1 };
-    adyacente[1] = { x : -1, y :  0 };
-    adyacente[2] = { x :  0, y :  1 };
-    adyacente[3] = { x :  1, y :  0 };
+      nodoActual = { x : x, y : y, px : -1, py : -1, g : 0, h : 0 }; 
+      // nodo inicial no tiene parent ni F
       
-    adyacente[4] = { x :  -1, y :  -1 };
-    adyacente[5] = { x :  1, y :  1 };
-    adyacente[6] = { x :  1, y :  -1 };
-    adyacente[7] = { x :  -1, y :  1 };     
+      adyacente = new Array();
 
-    var listaCerrada = [],
-        listaAbierta = [],
-        camino = [];
+      adyacente[0] = { x :  0, y : -1 };
+      adyacente[1] = { x : -1, y :  0 };
+      adyacente[2] = { x :  0, y :  1 };
+      adyacente[3] = { x :  1, y :  0 };
+      
+      adyacente[4] = { x :  -1, y :  -1 };
+      adyacente[5] = { x :  1, y :  1 };
+      adyacente[6] = { x :  1, y :  -1 };
+      adyacente[7] = { x :  -1, y :  1 };     
+
+      listaCerrada = new Array();
+      listaAbierta = new Array();
+      var camino = new Array();
+      
+      
+      pushNode(listaAbierta, nodoActual);
+      var caminoEncontrado = false;
+      console.log(nodoActual);
+      while ((listaAbierta.length != 0) && (caminoEncontrado == false)) {
+            nodoAnalizado = popMinCostNode(listaAbierta);
+      
+            if ((nodoAnalizado.x == fx) && (nodoAnalizado.y == fy)) {
+              caminoEncontrado = true;
+              console.log("encontrado!");
+             
+            } else {
+                console.log("analisis x:"+nodoAnalizado.x+" y: "+nodoAnalizado.y);
+                  for(i=0; i<8; i++) {
+                    var ax = nodoAnalizado.x + adyacente[i].x;
+                    var ay = nodoAnalizado.y + adyacente[i].y;
+                    console.log("ax: "+ax);
+                    console.log("ay: "+ay);
+
+                    if (esTransitable(ax, ay)) {
+                      var indexOpen = estaEn(listaAbierta,ax,ay);
+                      var indexClose = estaEn(listaCerrada,ax,ay);
+                        
+                          if ((indexOpen == 0) && (indexClose == 0)) {
+                            // no esta en ninguna lista asi que lo agrego en listaAbierta
+                            var G = nodoAnalizado.g + obtenerG(i);
+                            var H = obtenerH(ax,ay,fx,fy);
+                            nodoTemp = { x : ax, y : ay, px : nodoAnalizado.x, py : nodoAnalizado.y, g : G, h : H };
+                            //alert(listaAbierta.length);
+                            pushNode(listaAbierta, nodoTemp);
+                          }
+                    } // si es transitable.
+                  } // END FOR
+        
+             } // fin analisis de nodos
+
+        pushNode(listaCerrada, nodoAnalizado);
+        } // fin while
+      
 
 
-    pushNode(listaAbierta, nodoActual);
-    var caminoEncontrado = false;
 
-    while ((listaAbierta.length !== 0) && (!caminoEncontrado)) {
 
-        var extractNode = popMinCostNode(listaAbierta);
 
-        // inicio analisis de nodos
-        if ((extractNode.x == fx) && (extractNode.y == fy)) {
-            // LLEGUE AL OBJETIVO
-            //pushNode(listaCerrada, extractNode);
-            caminoEncontrado = true;
 
-        } else {
-            //para cada nodo adjacente
-            for(var i=0; i<8; i++) {
-                var ax = extractNode.x + adyacente[i].x;
-                var ay = extractNode.y + adyacente[i].y;
-                //verificar si es transitable
-                if (esTransitable(ax,ay)) {
-                    var indexOpen = estaEn(listaAbierta,ax,ay);
-                    var indexClose = estaEn(listaCerrada,ax,ay);
-                    //no esta en la lista abierta ni cerrada
-                    if ((indexOpen === 0) && (indexClose === 0)) {
-                        // no esta en ninguna lista asi que lo agrego en listaAbierta
-                        var G = extractNode.g + obtenerG(i);
-                        var H = obtenerH(ax,ay,fx,fy);
-                        //next node.
-                        var nodoTemp = { x : ax, y : ay, px : extractNode.x, py : extractNode.y, g : G, h : H };
-                        //alert(listaAbierta.length);
-                        pushNode(listaAbierta, nodoTemp);
-                    }
-                } // si es transitable.
-            } // END FOR
-
-        } // fin analisis de nodos
-        //nodo actual lo agrego a analizado.
-        pushNode(listaCerrada, extractNode);
-    } // fin while
-
-    if(listaAbierta.length === 0) {
+      if(listaAbierta.length == 0) {
         return false; 
-    } else {
+      } else {
+        
         var indiceFinal = listaCerrada.length - 1;
         camino.push({x : listaCerrada[indiceFinal].x, y : listaCerrada[indiceFinal].y});
         parentX = listaCerrada[indiceFinal].px;
@@ -211,25 +201,30 @@ var aStar = function(map, x, y, fx, fy){
         
         
         while ((parentX != -1) && (parentY != -1)) {
-            for(var i = indiceFinal; i >= 0; i--) {
-                // buscar en la lista donde esta Px y Py
-                //alert(indiceFinal);
 
-                if ((listaCerrada[i].x == parentX) && (listaCerrada[i].y == parentY)) {
-                    parentX = listaCerrada[i].px;
-                    parentY = listaCerrada[i].py;
-                    camino.push({x : listaCerrada[i].x, y : listaCerrada[i].y});
-                    indiceFinal = i;
-                    break;  
-                }
+          for(i = indiceFinal; i >= 0; i--) {
+            // buscar en la lista donde esta Px y Py
+          //alert(indiceFinal);
+
+            if ((listaCerrada[i].x == parentX) && (listaCerrada[i].y == parentY)) {
+              parentX = listaCerrada[i].px;
+              parentY = listaCerrada[i].py;
+              camino.push({x : listaCerrada[i].x, y : listaCerrada[i].y});
+              indiceFinal = i;
+              break;  
             }
+
+          }
+          
         }
+        console.log(camino);
         return camino.reverse();
-    }
-};
+      }
+      
+    } // END FUNCTION
 
 var output = aStar(mapa, 4, 5, 6, 15);
-
+console.log(output);
 if(output === recorrido){
     console.log("Correcto");
 }else{
