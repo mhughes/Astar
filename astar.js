@@ -6,6 +6,7 @@
  * 42 = obstaculo
  * 15 = fin del mapa
 **/
+var assert = require("assert");//comparacion de arreglos
 
 var mapa = [200,200,200,200,200,200,200,200,200,200,15 ,
       200,200,200,200,200,200,200,200,200,200,15   ,
@@ -40,7 +41,7 @@ function checkKey() {
     updateCanvas();
 }
 
-function putCharInMatriz(mapa, cx, cy, tipo_bloque, numero_bloque) {
+function putCharInMatriz(cx, cy, tipo_bloque, numero_bloque) {
     mapa[cy*11 + cx] = ((tipo_bloque-1) * 20) + numero_bloque;
 }
 
@@ -50,11 +51,10 @@ function putPixel(cx, cy, on) {
 }
 
 function getPixel(cx,cy) {
-    console.log("get pixel at x:"+cx+"y: "+cy+" pixel:"+mapa[cy*11 + cx]);
     if(mapa[cy*11 + cx] == 200) { return true; } else { return false; }
 }
 
-function drawGrid(mapa) {
+function drawGrid() {
     for(var py=0; py<20; py++){
         for(var px=0;px<10; px++) {
             if(mapa[(py*11)+px] !== 0) { putChar(px,py, getTipoBloque(mapa[(py*11)+px]), getNumBloque(mapa[(py*11)+px]));}
@@ -80,7 +80,6 @@ function popNode(lista, indice) {
 }
 
 function esTransitable(x, y) {
-    console.log("es transitable x:"+x+" y:"+y+" es" + getPixel(x, y));
     return getPixel(x,y);
 }
 
@@ -148,7 +147,7 @@ function obtenerH(x,y,fx,fy) {
       
       pushNode(listaAbierta, nodoActual);
       var caminoEncontrado = false;
-      console.log(nodoActual);
+
       while ((listaAbierta.length != 0) && (caminoEncontrado == false)) {
             nodoAnalizado = popMinCostNode(listaAbierta);
       
@@ -157,12 +156,9 @@ function obtenerH(x,y,fx,fy) {
               console.log("encontrado!");
              
             } else {
-                console.log("analisis x:"+nodoAnalizado.x+" y: "+nodoAnalizado.y);
                   for(i=0; i<8; i++) {
                     var ax = nodoAnalizado.x + adyacente[i].x;
                     var ay = nodoAnalizado.y + adyacente[i].y;
-                    console.log("ax: "+ax);
-                    console.log("ay: "+ay);
 
                     if (esTransitable(ax, ay)) {
                       var indexOpen = estaEn(listaAbierta,ax,ay);
@@ -190,12 +186,12 @@ function obtenerH(x,y,fx,fy) {
 
 
 
-      if(listaAbierta.length == 0) {
-        return false; 
+      if(listaAbierta.length === 0) {
+        return false;
       } else {
         
         var indiceFinal = listaCerrada.length - 1;
-        camino.push({x : listaCerrada[indiceFinal].x, y : listaCerrada[indiceFinal].y});
+        camino.push([listaCerrada[indiceFinal].x, listaCerrada[indiceFinal].y]);
         parentX = listaCerrada[indiceFinal].px;
         parentY = listaCerrada[indiceFinal].py;
         
@@ -209,24 +205,19 @@ function obtenerH(x,y,fx,fy) {
             if ((listaCerrada[i].x == parentX) && (listaCerrada[i].y == parentY)) {
               parentX = listaCerrada[i].px;
               parentY = listaCerrada[i].py;
-              camino.push({x : listaCerrada[i].x, y : listaCerrada[i].y});
+              camino.push([listaCerrada[i].x,  listaCerrada[i].y]);
               indiceFinal = i;
-              break;  
+              break;
             }
 
           }
           
         }
-        console.log(camino);
         return camino.reverse();
       }
       
     } // END FUNCTION
 
 var output = aStar(mapa, 4, 5, 6, 15);
-console.log(output);
-if(output === recorrido){
-    console.log("Correcto");
-}else{
-    console.log("No devuelve el recorrido correcto");
-}
+
+assert.deepEqual(output, recorrido, "output y el recorrido deberian ser iguales.");
