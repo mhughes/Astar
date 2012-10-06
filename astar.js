@@ -1,3 +1,5 @@
+var assert = require("assert");
+
 /**
  *
  * Implementación Astar tp caece.
@@ -6,7 +8,6 @@
  * 42 = obstaculo
  * 15 = fin del mapa
 **/
-var assert = require("assert");//comparacion de arreglos
 
 var mapa = [200,200,200,200,200,200,200,200,200,200,15 ,
       200,200,200,200,200,200,200,200,200,200,15   ,
@@ -34,42 +35,10 @@ var recorrido = [[4, 5], [3, 6], [2, 7], [1, 8], [2, 9], [3, 10], [4, 11], [5, 1
              [8, 16], [8, 15], [7, 14], [6, 15]];
 
 
-/* KEYS */
-
-function checkKey() {
-    if (!getPixel(1,1)) { putPixel(1,1,false); } else { putPixel(1,1,true); }
-    updateCanvas();
-}
-
-function putCharInMatriz(cx, cy, tipo_bloque, numero_bloque) {
-    mapa[cy*11 + cx] = ((tipo_bloque-1) * 20) + numero_bloque;
-}
-
-
-function putPixel(cx, cy, on) {
-    if(on) { mapa[cy*11 + cx] = 15; } else { mapa[cy*11 + cx] = 200; }
-}
-
 function getPixel(cx,cy) {
     if(mapa[cy*11 + cx] == 200) { return true; } else { return false; }
 }
 
-function drawGrid() {
-    for(var py=0; py<20; py++){
-        for(var px=0;px<10; px++) {
-            if(mapa[(py*11)+px] !== 0) { putChar(px,py, getTipoBloque(mapa[(py*11)+px]), getNumBloque(mapa[(py*11)+px]));}
-        }
-    }
-}
-
-function getTipoBloque(numChar) {
-  return(Math.floor((numChar - 1) / 20) + 1);
-}
-  
-function getNumBloque(numChar) {
-  return(numChar - (Math.floor((numChar - 1) / 20)*20));
-}
-    
 function pushNode(lista, nodo) {
     lista.push(nodo);
 }
