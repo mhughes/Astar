@@ -130,6 +130,7 @@ function aStar($map, $x,$y,$fx,$fy){
 				$ay = $nodoAnalizado["y"] + $adyacente[$i]["y"];
 
 				if (esTransitable($ax, $ay)) {
+					print "transitable";
 					$indexOpen = estaEn($listaAbierta,$ax,$ay);
 					$indexClose = estaEn($listaCerrada,$ax,$ay);
 
