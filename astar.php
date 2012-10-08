@@ -7,7 +7,7 @@
  * 42 = obstaculo
  * 15 = fin del mapa
  **/
-$map = [200,200,200,200,200,200,200,200,200,200,15   ,
+$mapa = [200,200,200,200,200,200,200,200,200,200,15   ,
 	  200,200,200,200,200,200,200,200,200,200,15   ,  
 	  200,200,200,200,200,200,200,200,200,200,15   ,
 	  200,200,200,200,200,200,200,200,200,200,15   ,
@@ -34,6 +34,7 @@ $recorrido = [[4,5],[3,6],[2,7],[1,8], [2,9], [3,10], [4,11], [5,12], [4,13], [4
 
 
 function getPixel($cx, $cy) {
+	global $mapa;
     if($mapa[$cy*11 + $cx] == 200) { return true; } else { return false; }
 }
 
@@ -51,10 +52,12 @@ function esTransitable($x, $y) {
 function estaEn($lista, $x, $y) {
     $encontrado = 0;
     for($j=0; $j<count($lista); $j++) {
+
         if( ($lista[$j]["x"] == $x) && ($lista[$j]["y"] == $y) ) {
             $encontrado = $j + 1;
         }
     }
+    var_dump($encontrado);
     return $encontrado;
 }
 
@@ -98,7 +101,7 @@ function obtenerH($x, $y, $fx, $fy) {
  *    Integer $fy coordenada y de llegada
 **/ 
 function aStar($map, $x,$y,$fx,$fy){
-	$nodoActual = ["x" => x, "y" => y, "px" => -1, "py" => -1, "g" => 0, "h" => 0 ];
+	$nodoActual = ["x" => $x, "y" => $y, "px" => -1, "py" => -1, "g" => 0, "h" => 0 ];
 	// nodo inicial no tiene parent ni F
 	$listaCerrada = [];
 	$listaAbierta = [];
@@ -117,9 +120,11 @@ function aStar($map, $x,$y,$fx,$fy){
 
 	array_push($listaAbierta, $nodoActual);
 	$caminoEncontrado = false;
-	print "getting int owhile";
+
 	while ((count($listaAbierta) !== 0) && (!$caminoEncontrado)) {
+		print "pre".count($listaAbierta);
 		$nodoAnalizado = popMinCostNode($listaAbierta);
+		print "post".count($listaAbierta);
 
 		if (($nodoAnalizado["x"] == $fx) && ($nodoAnalizado["y"] == $fy)) {
 			$caminoEncontrado = true;
@@ -130,11 +135,10 @@ function aStar($map, $x,$y,$fx,$fy){
 				$ay = $nodoAnalizado["y"] + $adyacente[$i]["y"];
 
 				if (esTransitable($ax, $ay)) {
-					print "transitable";
 					$indexOpen = estaEn($listaAbierta,$ax,$ay);
 					$indexClose = estaEn($listaCerrada,$ax,$ay);
 
-					if (($indexOpen === 0) && ($indexClose === 0)) {
+					if (($indexOpen == 0) && ($indexClose == 0)) {
 						// no esta en ninguna lista asi que lo agrego en listaAbierta
 						$G = $nodoAnalizado["g"] + obtenerG($i);
 						$H = obtenerH($ax,$ay,$fx,$fy);
