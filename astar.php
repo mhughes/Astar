@@ -42,7 +42,11 @@ function getPixel($cx, $cy) {
 function popNode(&$lista, $indice) {
     $return = $lista[$indice];
     unset($lista[$indice]);
-    return $return;
+    foreach($lista as $item){
+    	$listanew[] = $item;
+    }
+    $lista = $listanew;
+    return $return;	
 }
 
 function esTransitable($x, $y) {
@@ -57,7 +61,6 @@ function estaEn($lista, $x, $y) {
             $encontrado = $j + 1;
         }
     }
-    var_dump($encontrado);
     return $encontrado;
 }
 
@@ -69,7 +72,7 @@ function obtenerF($nodo) {
     return $nodo["g"] + $nodo["h"];
 }
 
-function  popMinCostNode($lista) {
+function  popMinCostNode(&$lista) {
     $F = 0;
     $indiceMenorF = 0;
     $minCostoF = 100000;
@@ -81,7 +84,6 @@ function  popMinCostNode($lista) {
 			$indiceMenorF = $i;
 		}
     }
-  
     return popNode($lista,$indiceMenorF);
   
 } // end nodoAnalizadoMenorCosto
@@ -118,17 +120,15 @@ function aStar($map, $x,$y,$fx,$fy){
 	$adyacente[6] = [ "x" =>  1, "y" => -1 ];
 	$adyacente[7] = [ "x" => -1, "y" =>  1 ];
 
-	array_push($listaAbierta, $nodoActual);
+	$listaAbierta[] = $nodoActual;
 	$caminoEncontrado = false;
 
 	while ((count($listaAbierta) !== 0) && (!$caminoEncontrado)) {
-		print "pre".count($listaAbierta);
+
 		$nodoAnalizado = popMinCostNode($listaAbierta);
-		print "post".count($listaAbierta);
 
 		if (($nodoAnalizado["x"] == $fx) && ($nodoAnalizado["y"] == $fy)) {
 			$caminoEncontrado = true;
-			print "encontrado!";
 		} else {
 			for($i=0; $i<8; $i++) {//8 es la cantidad de nodos adjacentes.
 				$ax = $nodoAnalizado["x"] + $adyacente[$i]["x"];
@@ -143,13 +143,13 @@ function aStar($map, $x,$y,$fx,$fy){
 						$G = $nodoAnalizado["g"] + obtenerG($i);
 						$H = obtenerH($ax,$ay,$fx,$fy);
 						$nodoTemp = ["x" => $ax, "y" => $ay, "px" => $nodoAnalizado["x"], "py" => $nodoAnalizado["y"], "g" => $G, "h" => $H ];
-					  
-						array_push($listaAbierta, $nodoTemp);
+						
+						$listaAbierta[] =  $nodoTemp;
 					}
 				} // si es transitable.
 			} // END FOR
 		} // fin analisis de nodos
-		array_push($listaCerrada, $nodoAnalizado);
+		$listaCerrada[] = $nodoAnalizado;
 	} // fin while
 	  
 	if(count($listaAbierta) === 0) {
