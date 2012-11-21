@@ -8,7 +8,7 @@ desc[4]="Total number of CPU-seconds used by the system on behalf of the process
 desc[5]="Total number of CPU-seconds that the process used directly (in user mode):"
 desc[6]="Average resident set size of the process:"
 
-iterations=1000
+iterations=100
 
 values_acum=(0 0 0 0 0 0 0)
 declare -a values_curr
@@ -16,11 +16,11 @@ declare -a values_curr
 for i in `seq 1 $iterations`;
 do
   res=`/usr/bin/time -f "%e|%K|%M|%P|%S|%U|%t" $1 2>&1`
-  
+
   values_ret=($(echo $res | tr "|" "\n"))
 
   unset values_ret[0]
-  
+
   let cont=0
   for val in "${values_ret[@]}"
   do
@@ -39,9 +39,10 @@ done
 let cont=0
 for val in "${values_acum[@]}"
   do
-    prom=$(echo "scale=4; $val/$iterations" | bc -l)
-    echo "${desc[$cont]} = $prom"
-    
+    #prom=$(echo "scale=4; $val/$iterations" | bc -l)
+    #echo "${desc[$cont]} = $prom"
+    echo "${desc[$cont]} = $val"
+
     #Sumamos uno al contador
     let cont++
   done
