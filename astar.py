@@ -115,10 +115,8 @@ def aStar(mapa, x, y, fx, fy):
 
     while (len(listaAbierta) != 0 and not caminoEncontrado):
         nodoAnalizado = popMinCostNode(listaAbierta)
-        print nodoAnalizado["x"], nodoAnalizado["y"], nodoAnalizado["px"], nodoAnalizado["py"], nodoAnalizado["g"], nodoAnalizado["h"]
         if (nodoAnalizado["x"] == fx) and (nodoAnalizado["y"] == fy):
             caminoEncontrado = True
-            print "encontrado"
         else:
             for i in range(8):
                 ax = nodoAnalizado["x"] + adyacente[i]["x"]
