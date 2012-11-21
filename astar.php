@@ -35,6 +35,12 @@ $recorrido = [[4,5],[3,6],[2,7],[1,8], [2,9], [3,10], [4,11], [5,12], [4,13], [4
 
 function getPixel($cx, $cy) {
 	global $mapa;
+	if($cx <0 || $cy < 0){
+		return false;
+	}
+	if(($cy*11 + $cx) > count($mapa)){
+		return false;
+	}
     if($mapa[$cy*11 + $cx] == 200) { return true; } else { return false; }
 }
 
@@ -42,6 +48,7 @@ function getPixel($cx, $cy) {
 function popNode(&$lista, $indice) {
     $return = $lista[$indice];
     unset($lista[$indice]);
+    $listanew = [];
     foreach($lista as $item){
     	$listanew[] = $item;
     }
@@ -102,7 +109,7 @@ function obtenerH($x, $y, $fx, $fy) {
  *    Integer $fx coordenada x de llegada
  *    Integer $fy coordenada y de llegada
 **/ 
-function aStar($map, $x,$y,$fx,$fy){
+function aStar($mapa, $x,$y,$fx,$fy){
 	$nodoActual = ["x" => $x, "y" => $y, "px" => -1, "py" => -1, "g" => 0, "h" => 0 ];
 	// nodo inicial no tiene parent ni F
 	$listaCerrada = [];
@@ -177,7 +184,7 @@ function aStar($map, $x,$y,$fx,$fy){
 	}
 }
 
-$output = aStar($map, 4, 5, 6, 15);
+$output = aStar($mapa, 4, 5, 6, 15);
 
 if($output != $recorrido){
 	  echo "No deasvuelve el recorrido correcto";
