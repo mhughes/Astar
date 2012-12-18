@@ -6,7 +6,7 @@
 #  200 = Transitable
 #  42 = obstaculo
 #  15 = fin del mapa
-
+import json
 
 mapa = [200,200,200,200,200,200,200,200,200,200,15,
         200,200,200,200,200,200,200,200,200,200,15,
@@ -163,8 +163,23 @@ def aStar(mapa, x, y, fx, fy):
 
 output = aStar(mapa, 4, 5, 6, 15)
 
-if not output == recorrido:
-    print "No devuelve el recorrido correcto"
-else:
-    print "Correcto"
+def convert_to_json(output):
+    result = []
+    Jsondata = ""
+    item = {}
+    for i in range(len(output)):
+        item = {
+            "x": output[i][0],
+            "y": output[i][1]
+        }
+        result.append(item)
+    Jsondata = json.dumps({'data': result})
+    return Jsondata
+	
+convert_to_json(output)
+
+#if not output == recorrido:
+#    print "No devuelve el recorrido correcto"
+#else:
+#    print "Correcto"
 
