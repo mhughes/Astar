@@ -88,7 +88,7 @@ def popMinCostNode(lista):
 
 
 def obtenerH(x, y, fx, fy):
-    return 10 * (int(x - fx) + int(y - fy))
+    return 10 * (abs(x - fx) + abs(y - fy))
 
 
 def aStar(mapa, x, y, fx, fy):
