@@ -34,11 +34,6 @@ var recorrido = [[4, 5], [3, 6], [2, 7], [1, 8], [2, 9], [3, 10], [4, 11], [5, 1
              [4, 13], [4, 14], [4, 15], [4, 16], [5, 17], [6, 17], [7, 17],
              [8, 16], [8, 15], [7, 14], [6, 15]];
 
-
-function getPixel(cx,cy) {
-    if(mapa[cy*11 + cx] == 200) { return true; } else { return false; }
-}
-
 function pushNode(lista, nodo) {
     lista.push(nodo);
 }
@@ -49,9 +44,9 @@ function popNode(lista, indice) {
 }
 
 function esTransitable(x, y) {
-    return getPixel(x,y);
+    if(mapa[y*11 + x] == 200) { return true; } else { return false; }
 }
-
+	
 function estaEn(lista,x,y) {
     var encontrado = 0;
     for(var j=0; j<lista.length; j++) {
@@ -119,7 +114,6 @@ function obtenerH(x,y,fx,fy) {
 
         if ((nodoAnalizado.x == fx) && (nodoAnalizado.y == fy)) {
             caminoEncontrado = true;
-            console.log("encontrado!");
         } else {
             for(i=0; i<8; i++) {//8 es la cantidad de nodos adjacentes.
                 var ax = nodoAnalizado.x + adyacente[i].x;
@@ -169,6 +163,28 @@ function obtenerH(x,y,fx,fy) {
       
 } // END astar
 
-var output = aStar(mapa, 4, 5, 6, 15);
 
+/* CONVERTIR A JSON */
+function convert_to_json(output){
+	var result = [];
+	var Jsondata = "";
+
+	for (var i = 0; i < output.length; i++) {
+
+		var item = {
+		    "x": output[i][0],
+		    "y": output[i][1]
+		};
+
+		result.push(item);
+	}
+	Jsondata = JSON.stringify({data: result});
+	return Jsondata;
+}
+
+var output = aStar(mapa, 4, 5, 6, 15);
+convert_to_json(output);
+
+/*
 assert.deepEqual(output, recorrido, "output y el recorrido deberian ser iguales.");
+*/

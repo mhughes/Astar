@@ -163,8 +163,10 @@ def aStar(mapa, x, y, fx, fy):
 
 output = aStar(mapa, 4, 5, 6, 15)
 
+print output
+print recorrido
 if not output == recorrido:
     print "No devuelve el recorrido correcto"
+	
 else:
     print "Correcto"
-
