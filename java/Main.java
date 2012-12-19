@@ -123,7 +123,6 @@ public class Main {
 
 		        if ((nodoAnalizado.getX() == fx) && (nodoAnalizado.getY() == fy)) {
 		            caminoEncontrado = true;
-		            System.out.println("encontrado!");
 		        } else {
 		            for(int i=0; i<8 ; i++) {//8 es la cantidad de nodos adjacentes.
 		                int ax = nodoAnalizado.getX() + adyacente[i].getX();
@@ -175,6 +174,15 @@ public class Main {
 	public static void main(String[] args) {
 		List<Nodo> output = (List<Nodo>)aStar(mapa, 4, 5, 6, 15);
 		assertArrayEquals("output y el recorrido deberian ser iguales.",recorrido, output.toArray(new Nodo[output.size()]));
+		Jsonificar(output);
+	}
+
+	private static void Jsonificar(List<Nodo> output) {
+		StringBuilder sb = new StringBuilder("{\"data\":");
+		sb.append(output.toString());
+		sb.append("}");
+		System.out.println(sb);
+		
 	}
 
 	private static void assertArrayEquals(String string, Nodo[] recorrido2,
@@ -266,8 +274,7 @@ class Nodo {
 
 	@Override
 	public String toString() {
-		return "{ x: " + x + ", y: " + y + ", px: " + px + ", py: " + py
-				+ ", g: " + g + ", h: " + h + " }";
+		return "{\"x\":" + x + ",\"y\":" + y + "}";
 	}
 
 	@Override
