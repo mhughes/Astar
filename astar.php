@@ -186,8 +186,22 @@ function aStar($mapa, $x,$y,$fx,$fy){
 
 $output = aStar($mapa, 4, 5, 6, 15);
 
+function convert_to_json($output){
+	$result = [];
+
+	foreach($output as $nodo){
+		$item = array(
+			"x" => $nodo[0],
+			"y" => $nodo[1]
+			);
+		$result[] = $item;
+	}
+	return json_encode(array("data" => $result));
+}
+
 if($output != $recorrido){
 	  echo "No deasvuelve el recorrido correcto";
 }else{
 	  echo "Correcto";
 }
+//print convert_to_json($output);
