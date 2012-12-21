@@ -199,9 +199,4 @@ function convert_to_json($output){
 	return json_encode(array("data" => $result));
 }
 
-if($output != $recorrido){
-	  echo "No deasvuelve el recorrido correcto";
-}else{
-	  echo "Correcto";
-}
-//print convert_to_json($output);
+print convert_to_json($output);

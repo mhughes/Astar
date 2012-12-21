@@ -176,7 +176,7 @@ def convert_to_json(output):
     Jsondata = json.dumps({'data': result})
     return Jsondata
 	
-convert_to_json(output)
+print convert_to_json(output)
 
 #if not output == recorrido:
 #    print "No devuelve el recorrido correcto"

@@ -183,7 +183,7 @@ function convert_to_json(output){
 }
 
 var output = aStar(mapa, 4, 5, 6, 15);
-convert_to_json(output);
+console.log(convert_to_json(output));
 
 /*
 assert.deepEqual(output, recorrido, "output y el recorrido deberian ser iguales.");

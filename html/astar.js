@@ -2,7 +2,12 @@
   $(document).ready(function() {
     init();
   });
-  
+  function querystring(key) {
+     var re=new RegExp('(?:\\?|&)'+key+'=(.*?)(?=&|$)','gi');
+     var r=[], m;
+     while ((m=re.exec(document.location.search)) != null) r[r.length]=m[1];
+     return r;
+  } 
   function initCanvas() {
 
     var canvas = document.getElementById('mapa');
@@ -86,8 +91,11 @@
     200,200,200,200,200,200,200,200,200,200,15   ]
 
     updateCanvas();
-    
-    $.get('ajax.php', function(caminoEncontrado) {
+    var lenguaje = "php";
+    if(querystring("lenguaje").length>0){
+      lenguaje = querystring("lenguaje")[0];
+    }
+    $.get('ajax.php?lenguaje='+lenguaje, function(caminoEncontrado) {
       caminoEncontrado = caminoEncontrado.data;
       clock1 = setInterval(function() {
         putCharInMatriz(caminoEncontrado[indiceCaminoEncontrado].x,caminoEncontrado[indiceCaminoEncontrado].y,1,15);
