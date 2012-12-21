@@ -11,7 +11,7 @@ switch ($lang) {
 		$var = shell_exec('node ../astar.js');
 		break;
 	case "java":
-		$var = shell_exec('java -jar ../java/astar.jar');
+		$var = shell_exec('java -cp ../java/astar.jar Main');
 		break;
 }
 
