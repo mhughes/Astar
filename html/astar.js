@@ -13,7 +13,7 @@
       blocks = new Image(); // declarar sin "var" produce q sean globales
 
 
-      blocks.src ='/img/imagen.png';
+      blocks.src ='img/imagen.png';
 
     } else {
       alert("Su navegador no soporta html5 - se recomienda actualizarlo."); // no se detecto canvas
@@ -87,7 +87,7 @@
 
     updateCanvas();
     
-    $.get('/ajax.php', function(caminoEncontrado) {
+    $.get('ajax.php', function(caminoEncontrado) {
       caminoEncontrado = caminoEncontrado.data;
       clock1 = setInterval(function() {
         putCharInMatriz(caminoEncontrado[indiceCaminoEncontrado].x,caminoEncontrado[indiceCaminoEncontrado].y,1,15);
