@@ -6,11 +6,19 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
   <script type="text/javascript" src="astar.js"></script> 
   <style type="text/css">
-    body { background-color: black; font-family:Arial; }
+    body { background-color: #666666; font-family:Arial; }
     #wrapper { position:relative; margin:0 auto; width:200px; }
-    canvas { margin-top: 82px; border: 1px solid white; }
-	h2{color:#E4E4E4;position:relative;margin:0 auto;text-align:center;margin-top:25px;font-size:20px;}
-	#autores{position:absolute;right:100px;width:400px;font-size:13px;color:grey;bottom:50px;}
+    canvas { margin-top: 82px; border: 1px solid grey; 
+-webkit-box-shadow:  0px 0px 8px 3px #e7e7e7;
+        
+        box-shadow:  0px 0px 8px 3px #e7e7e7;
+
+}
+	h2{color:#E4E4E4;position:relative;margin:0 auto;text-align:center;margin-top:25px;font-size:20px;
+text-shadow: 1px 1px 1px #000000;
+        filter: dropshadow(color=#000000, offx=1, offy=1);
+}
+	#autores{position:absolute;right:100px;width:400px;font-size:13px;color:white;bottom:50px;}
   </style>
 </head>
 <body>
