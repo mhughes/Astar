@@ -180,11 +180,12 @@ function aStar($mapa, $x,$y,$fx,$fy){
 			}
 		  
 		}
+		
 		return array_reverse($camino);
 	}
 }
 
-$output = aStar($mapa, 4, 5, 6, 15);
+$output = aStar($mapa, 6, 15, 4, 5);
 
 function convert_to_json($output){
 	$result = [];

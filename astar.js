@@ -182,7 +182,7 @@ function convert_to_json(output){
 	return Jsondata;
 }
 
-var output = aStar(mapa, 4, 5, 6, 15);
+var output = aStar(mapa, 10, 1, 6, 14);
 console.log(convert_to_json(output));
 
 /*

@@ -22,15 +22,13 @@
 
     } else {
       alert("Su navegador no soporta html5 - se recomienda actualizarlo."); // no se detecto canvas
-    }      
+    }
   }
   
   function updateCanvas() {
     ctx.clearRect(0,0,160,320);
 
     drawGrid();
-    putChar(4,5,1,15);//x,y de punto de partida y los pixeles de la imagen
-    putChar(6,15,3,15);//punto de llegada
   }
 
   function putChar(cx,cy,tipo_bloque,numero_bloque) {
@@ -39,17 +37,17 @@
   }
 
   function putCharInMatriz(cx,cy,tipo_bloque, numero_bloque) {
-    pl1[cy*11 + cx] = ((tipo_bloque-1) * 20) + numero_bloque;
-  } 
+    mapa[cy*11 + cx] = ((tipo_bloque-1) * 20) + numero_bloque;
+  }
 
-  function drawGrid() {   
+  function drawGrid() {
     for(py=0; py<20; py++){
       for(px=0;px<10; px++) {
-        if(pl1[(py*11)+px] != 0) {
-          putChar(px,py, getTipoBloque(pl1[(py*11)+px]), getNumBloque(pl1[(py*11)+px]));
+        if(mapa[(py*11)+px] !== 0) {
+          putChar(px,py, getTipoBloque(mapa[(py*11)+px]), getNumBloque(mapa[(py*11)+px]));
         }
       }
-    } 
+    }
   }
 
   function getTipoBloque(numChar) {
@@ -69,7 +67,7 @@
     initCanvas();
 
     // inicializo variables que usare 
-    pl1 =    [ 200,200,200,200,200,200,200,200,200,200,15,
+    mapa =    [ 200,200,200,200,200,200,200,200,200,200,15,
     200,200,200,200,200,200,200,200,200,200,15,
     200,200,200,200,200,200,200,200,200,200,15   ,
     200,200,200,200,200,200,200,200,200,200,15   ,

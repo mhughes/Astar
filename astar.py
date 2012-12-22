@@ -161,7 +161,7 @@ def aStar(mapa, x, y, fx, fy):
 #      Integer $fy coordenada y de llegada
 #      Array   $result resultado esperado (debug only)
 
-output = aStar(mapa, 4, 5, 6, 15)
+output = aStar(mapa, 9, 9, 9, 15)
 
 def convert_to_json(output):
     result = []
